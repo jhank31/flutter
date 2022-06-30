@@ -1,3 +1,4 @@
+export 'package:fl_components/screens/slider_screen.dart';
 
 export 'package:fl_components/screens/alert_screen.dart';
 export 'package:fl_components/screens/animated_screen.dart';

@@ -1,3 +1,4 @@
+import 'package:fl_components/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class SliderScreen extends StatefulWidget {
@@ -8,7 +9,8 @@ class SliderScreen extends StatefulWidget {
 }
 
 class _SliderScreenState extends State<SliderScreen> {
-  double sliderValue = 100;
+  double _sliderValue = 100;
+  bool _sliderEnable = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,14 +19,39 @@ class _SliderScreenState extends State<SliderScreen> {
         ),
         body: Column(
           children: [
-            Slider(
+            Slider.adaptive(
                 min: 50,
                 max: 400,
-                value: sliderValue,
-                onChanged: (value) {
-                  sliderValue = value;
-                  setState(() {});
-                })
+                activeColor: AppTheme.primary,
+                value: _sliderValue,
+                onChanged: _sliderEnable
+                    ? (value) {
+                        _sliderValue = value;
+                        setState(() {});
+                      }
+                    : null),
+            SwitchListTile.adaptive(
+                activeColor: AppTheme.primary,
+                title: const Text('Habilitar Slider'),
+                value: _sliderEnable,
+                onChanged: (value) => setState(() {
+                      _sliderEnable = value;
+                    })),
+            const AboutListTile(),
+            /* Switch(
+                value: _sliderEnable,
+                onChanged: (value) => setState(() {
+                      _sliderEnable = value;
+                    })), */
+            Image(
+              image: const NetworkImage(
+                  'https://cdn.pixabay.com/photo/2015/10/01/17/17/car-967387__480.png'),
+              fit: BoxFit.contain,
+              width: _sliderValue,
+            ),
+            const SizedBox(
+              height: 50,
+            )
           ],
         ));
   }

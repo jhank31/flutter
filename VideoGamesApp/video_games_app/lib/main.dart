@@ -35,8 +35,18 @@ class MyApp extends StatelessWidget {
         'home': (_) => const HomeScreen(),
         'details': (_) => const DetailScreen(),
       },
-      theme: ThemeData.light()
-          .copyWith(appBarTheme: const AppBarTheme(color: Colors.orange)),
+      theme: ThemeData.light().copyWith(
+        scaffoldBackgroundColor: const Color.fromARGB(255, 24, 36, 43),
+        appBarTheme: const AppBarTheme(
+          color: Color.fromARGB(255, 12, 17, 17),
+          centerTitle: true,
+          titleTextStyle: TextStyle(
+              fontFamily: 'Libre',
+              color: Colors.black,
+              fontSize: 25,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 }

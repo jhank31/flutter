@@ -64,12 +64,14 @@ class _CastCard extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-          Text(
-            actor.name,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Color.fromARGB(255, 219, 216, 216)),
+          Expanded(
+            child: Text(
+              actor.name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Color.fromARGB(255, 219, 216, 216)),
+            ),
           )
         ],
       ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:productos_app/screens/screens.dart';
 import 'package:productos_app/widgets/widgets.dart';
+import '../models/models.dart';
+import '../services/services.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = 'Home';
@@ -9,6 +12,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productService = Provider.of<ProductsServices>(context);
+
+    if (productService.isLoading) return const LoadingScreen();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -17,16 +23,25 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       body: ListView.builder(
-        itemCount: 10,
+        itemCount: productService.products.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-              onTap: () =>
-                  Navigator.pushNamed(context, ProductScreen.routeName),
-              child: const ProductCard());
+              onTap: () {
+                productService.selectedProduct =
+                    productService.products[index].copy();
+                Navigator.pushNamed(context, ProductScreen.routeName);
+              },
+              child: ProductCard(
+                product: productService.products[index],
+              ));
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          productService.selectedProduct =
+              Product(available: false, price: 0.0, name: '');
+          Navigator.pushNamed(context, ProductScreen.routeName);
+        },
         child: const Icon(Icons.add),
       ),
     );

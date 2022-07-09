@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:productos_app/models/models.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,6 +13,7 @@ class ProductsServices extends ChangeNotifier {
   bool isLoading = true;
   bool isSaving = false;
   late Product selectedProduct;
+  final storage = const FlutterSecureStorage();
   File? newPictureFile;
 
   ProductsServices() {
@@ -23,7 +25,8 @@ class ProductsServices extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     //aqui el loadProducts hace la peticion al endpoint 'products,json'
-    final url = Uri.https(_baseUrl, 'products.json');
+    final url = Uri.https(_baseUrl, 'products.json',
+        {'auth': await storage.read(key: 'token') ?? ''});
     //aqui se almacena la respuesta de la peticion en res
     final res = await http.get(url);
     // y por ultimo esa respuesta se convierte en un mapa o diccionario
@@ -55,7 +58,8 @@ class ProductsServices extends ChangeNotifier {
   }
 
   Future<String> updateProduct(Product product) async {
-    final url = Uri.https(_baseUrl, 'products/${product.id}.json');
+    final url = Uri.https(_baseUrl, 'products/${product.id}.json',
+        {'auth': await storage.read(key: 'token') ?? ''});
     final res = await http.put(url, body: product.toJson());
     final decodedData = res.body;
     //esto nos ayuda a saber cual es el id del producto que debemos actualizar
@@ -66,7 +70,8 @@ class ProductsServices extends ChangeNotifier {
   }
 
   Future<String> createProduct(Product product) async {
-    final url = Uri.https(_baseUrl, 'products.json');
+    final url = Uri.https(_baseUrl, 'products.json',
+        {'auth': await storage.read(key: 'token') ?? ''});
     final res = await http.post(url, body: product.toJson());
     final decodedData = json.decode(res.body);
     product.id = decodedData['name'];

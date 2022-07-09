@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:productos_app/ui/input_decorations.dart';
 import 'package:productos_app/widgets/widgets.dart';
 
+import '../services/services.dart';
+
 class LoginScreen extends StatelessWidget {
   static const routeName = 'Login';
 
@@ -105,13 +107,22 @@ class _LoginForm extends StatelessWidget {
                     ? null
                     : () async {
                         FocusScope.of(context).unfocus();
+                        final authService =
+                            Provider.of<AuthServices>(context, listen: false);
                         if (!loginForm.isValideForm()) return;
                         loginForm.isLoading = true;
-                        await Future.delayed(const Duration(seconds: 2));
-                        loginForm.isLoading = false;
-                        // ignore: use_build_context_synchronously
-                        Navigator.pushReplacementNamed(
-                            context, HomeScreen.routeName);
+
+                        final String? errorMessage = await authService.login(
+                            loginForm.email, loginForm.password);
+                        if (errorMessage == null) {
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushReplacementNamed(
+                              context, HomeScreen.routeName);
+                        } else {
+                          NotificationsService.showSnackbar(errorMessage);
+                          loginForm.isLoading = false;
+                        }
+                        // ignore: use_build_context_synchrono
                       },
                 child: Container(
                   padding:

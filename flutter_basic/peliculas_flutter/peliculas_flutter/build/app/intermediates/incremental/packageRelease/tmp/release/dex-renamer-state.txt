@@ -1,0 +1,4 @@
+#Sat Jul 09 18:11:25 COT 2022
+base.0=C\:\\Users\\USUARIO\\Desktop\\flutter-apps\\VideoGamesApp\\video_games_app\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

@@ -20,6 +20,8 @@ class LoginController extends GetxController {
   ClienteModel clientePedido = ClienteModel();
   RxMap<ProductoCatalogoModel, int> listaProductosCarrito = RxMap();
 
+
+  
   //obtener usuario logueado
   @override
   void onInit() async {
@@ -30,6 +32,8 @@ class LoginController extends GetxController {
     listadoProductos = await DBProvider.db.obtenerProductosCatalogo();
     await DBProvider.db.crearTablaRegistroPedidos();
   }
+  
+  
 
   validateUser(BuildContext context) async {
     if (usuario.value == '' && password.value == '') {
@@ -54,6 +58,7 @@ class LoginController extends GetxController {
     if (productoAgregadoCarrito(productoCatalogo.codigo!)) {
       listaProductosCarrito.update(productoCatalogo, (value) => cantidad);
     }
+
 
     if (cantidad == 0) {
       listaProductosCarrito.remove(productoCatalogo);
